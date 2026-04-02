@@ -1,0 +1,38 @@
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# IDEs
+.vscode/
+.idea/
+
+# Instances and SQLite
+instance/
+*.sqlite
+*.sqlite3
+*.db
+
+# Data and Outputs
+archive/
+archive.zip
+uploads/
+output/
+input/
+*.mp4
+*.avi
+*.mkv
+
+# Environment variables
+.env
+.env.*

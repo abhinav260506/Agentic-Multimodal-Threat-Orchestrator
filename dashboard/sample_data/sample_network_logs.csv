@@ -1,0 +1,8 @@
+timestamp,source_ip,dest_ip,protocol,action,threat_label,log_type,bytes_transferred,user_agent,request_path
+2024-12-30T11:00:00,192.168.1.50,8.8.8.8,DNS,allowed,benign,application,64,"System DNS Client",/query
+2024-12-30T11:05:00,192.168.1.100,10.0.0.5,HTTPS,allowed,benign,application,5120,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/api/health
+2024-12-30T11:10:00,192.168.1.200,external-server.com,HTTPS,allowed,suspicious,firewall,10240,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/upload
+2024-12-30T11:15:00,192.168.1.100,10.0.0.5,HTTP,allowed,benign,application,2048,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/dashboard
+2024-12-30T11:20:00,192.168.1.75,10.0.0.5,SSH,blocked,suspicious,ids,256,Unknown,/admin
+
+

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Alerts</h5>
+                <h2>{{ stats.total_alerts }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Critical Alerts</h5>
+                <h2>{{ stats.critical_alerts }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Status</h5>
+                <h2>Active</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-bell"></i> Recent Alerts</h5>
+            </div>
+            <div class="card-body">
+                {% if alerts %}
+                <div class="list-group">
+                    {% for alert in alerts %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="mb-1">
+                                    <span class="badge bg-{{ 'danger' if alert.severity == 'critical' else 'warning' if alert.severity == 'warning' else 'info' }}">
+                                        {{ alert.severity }}
+                                    </span>
+                                    {{ alert.alert_type }}
+                                </h6>
+                                <p class="mb-1">{{ alert.message }}</p>
+                                <small class="text-muted">{{ alert.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No alerts</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-clock-history"></i> Recent Logins</h5>
+            </div>
+            <div class="card-body">
+                {% if stats.recent_logins %}
+                <div class="list-group">
+                    {% for login in stats.recent_logins %}
+                    <div class="list-group-item">
+                        <small class="text-muted">{{ login.timestamp.strftime('%Y-%m-%d %H:%M') }}</small><br>
+                        <small>IP: {{ login.ip_address }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No recent logins</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-refresh alerts every 30 seconds
+    setInterval(function() {
+        fetch('/api/alerts/recent')
+            .then(response => response.json())
+            .then(data => {
+                // Update alerts (simplified - can be enhanced)
+                console.log('Alerts updated:', data);
+            });
+    }, 30000);
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Files{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-cloud-upload"></i> Upload Files</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_files') }}">
+            <div class="mb-3">
+                <label for="file_type" class="form-label">File Type</label>
+                <select class="form-select" id="file_type" name="file_type" required>
+                    <option value="logs">Log Files (CSV)</option>
+                    <option value="videos">Video Files (MP4)</option>
+                    <option value="network">Network Data (TXT)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Select File</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+                <small class="form-text text-muted">Max file size: 500MB</small>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-upload"></i> Upload to AWS S3
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Upload Instructions</h5>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li><strong>Log Files:</strong> CSV format with security log data</li>
+            <li><strong>Video Files:</strong> MP4 format for surveillance analysis</li>
+            <li><strong>Network Data:</strong> Text files with network connection data</li>
+        </ul>
+        <p class="text-muted">Files will be automatically processed by security agents after upload.</p>
+    </div>
+</div>
+{% endblock %}
+
+

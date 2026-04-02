@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-person-gear"></i> Admin Panel</h2>
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#users">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#alerts">All Alerts</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="users">
+        <div class="card">
+            <div class="card-header">
+                <h5>Organization Users</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Organization</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.organization }}</td>
+                            <td><span class="badge bg-{{ 'danger' if user.role == 'admin' else 'primary' }}">{{ user.role }}</span></td>
+                            <td><span class="badge bg-{{ 'success' if user.is_active else 'secondary' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-pane fade" id="alerts">
+        <div class="card">
+            <div class="card-header">
+                <h5>All Security Alerts</h5>
+            </div>
+            <div class="card-body">
+                {% if alerts %}
+                <div class="list-group">
+                    {% for alert in alerts %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="mb-1">
+                                    <span class="badge bg-{{ 'danger' if alert.severity == 'critical' else 'warning' if alert.severity == 'warning' else 'info' }}">
+                                        {{ alert.severity }}
+                                    </span>
+                                    {{ alert.alert_type }}
+                                </h6>
+                                <p class="mb-1">{{ alert.message }}</p>
+                                <small class="text-muted">User: {{ alert.user.username if alert.user else 'System' }} | {{ alert.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                            </div>
+                            {% if not alert.is_resolved %}
+                            <span class="badge bg-warning">Active</span>
+                            {% else %}
+                            <span class="badge bg-success">Resolved</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No alerts</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

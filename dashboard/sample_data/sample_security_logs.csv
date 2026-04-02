@@ -1,0 +1,13 @@
+timestamp,source_ip,dest_ip,protocol,action,threat_label,log_type,bytes_transferred,user_agent,request_path
+2024-12-30T10:00:00,192.168.1.100,10.0.0.5,HTTPS,allowed,benign,application,2048,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",/dashboard
+2024-12-30T10:05:00,192.168.1.105,10.0.0.5,SSH,blocked,suspicious,ids,512,Nmap Scripting Engine,/home/user
+2024-12-30T10:10:00,192.168.1.200,malicious-site.com,HTTPS,allowed,malicious,firewall,4096,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/api/data
+2024-12-30T10:15:00,192.168.1.100,10.0.0.5,HTTP,allowed,benign,application,1024,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/login
+2024-12-30T10:20:00,192.168.1.150,10.0.0.5,SSH,blocked,suspicious,ids,256,SQLMap/1.6-dev,/admin
+2024-12-30T10:25:00,192.168.1.100,10.0.0.5,HTTPS,allowed,benign,application,3072,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/api/users
+2024-12-30T10:30:00,192.168.1.200,10.0.0.5,FTP,allowed,suspicious,firewall,8192,curl/7.64.1,/backup
+2024-12-30T10:35:00,192.168.1.100,10.0.0.5,HTTP,allowed,benign,application,1536,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/dashboard
+2024-12-30T10:40:00,192.168.1.105,10.0.0.5,SSH,blocked,malicious,ids,1024,Nmap Scripting Engine,/root
+2024-12-30T10:45:00,192.168.1.100,10.0.0.5,HTTPS,allowed,benign,application,2048,"Mozilla/5.0 (Windows NT 10.0; Win64; x64)",/api/status
+
+
