@@ -1,46 +1,45 @@
-# Lightweight AgenticCyber Framework
+# Agentic-Multimodal-Threat-Orchestrator
 
-A modular, lightweight multi-agent cybersecurity framework that uses AI agents to analyze security threats across multiple domains.
+A powerful, modular, multi-agent cybersecurity framework that utilizes AI and machine learning to analyze security threats across multiple domains. This repository combines backend data analysis, threat detection via Large Language Models (LLMs), and an interactive web-based dashboard for real-time monitoring.
 
 ## 🎯 Features
 
-- **Multi-Agent Architecture**: Specialized agents for different security domains
-- **ML-Powered Threat Detection**: Trained Random Forest model for accurate log analysis
-- **Modular Design**: Easy to extend with new agents
-- **AI-Powered Analysis**: Uses Google Gemini models for intelligent threat detection
-- **Unified Orchestration**: Coordinates multiple agents for comprehensive security assessment
-- **Hybrid Approach**: ML model for logs, LLM for vision and network analysis
+- **Multi-Agent Architecture**: Highly specialized agents dedicated to different security domains.
+- **ML-Powered Threat Detection**: Includes a trained Random Forest model aimed at high accuracy log analysis.
+- **AI-Powered Analysis**: Utilizes Google Gemini models as a robust fallback for intelligent threat detection across images, network data, and structured logs.
+- **Unified Orchestration**: Master orchestrator coordinates Log, Vision, and Network agents for a comprehensive security assessment.
+- **Real-Time Dashboard**: Flask-based interactive web dashboard with an admin interface for log tracking, video analysis, and prompt alerting.
 
-## 📦 Agents
+---
 
-### LogAgent
-Analyzes security logs for threats, anomalies, and suspicious patterns. Uses trained ML model (Random Forest) for accurate threat detection. Falls back to LLM analysis if model not trained.
+## 📦 Core Agents
 
-### VisionAgent
-Analyzes video surveillance footage for security threats and suspicious activities.
+### 1. LogAgent
+Analyzes CSV security logs for threats, anomalies, and suspicious patterns. Primarily uses a trained Python ML model (Random Forest). Seamlessly falls back to LLM analysis if the model is unavailable or encounters unsupported data.
 
-### NetworkAgent
-Monitors network traffic, open ports, and active connections for security issues.
+### 2. VisionAgent
+Employs multimodal AI to interactively analyze video surveillance footage (`.mp4`) for security threats, unauthorized access, and suspicious activities.
+
+### 3. NetworkAgent
+Proactively monitors network traffic, open ports, and active connections for vulnerabilities and breaches.
+
+---
 
 ## 🚀 Quick Start
 
-### Installation
+### 1. Installation
 
-1. Install dependencies:
+Install all required Python dependencies:
 ```bash
 pip install -r requirements.txt
+cd dashboard
+pip install -r requirements.txt
+cd ..
 ```
 
-2. Train the ML model (recommended for better accuracy):
-```bash
-# Quick training (50k samples, faster)
-python quick_train.py
+### 2. Basic Configuration
 
-# Full training (entire dataset, better accuracy)
-python train_model.py
-```
-
-3. Set up your API key (optional, defaults to hardcoded key):
+Set up your Gemini API key (optional depending on your security setup):
 ```bash
 # Windows PowerShell
 $env:GEMINI_API_KEY="your-api-key-here"
@@ -49,124 +48,55 @@ $env:GEMINI_API_KEY="your-api-key-here"
 export GEMINI_API_KEY="your-api-key-here"
 ```
 
-### Usage
+### 3. Run the Dashboard
 
-#### Process Input Files (Recommended)
+To start the interactive web UI and real-time monitoring system:
+```bash
+cd dashboard
+python app.py
+```
+Access the dashboard at `http://localhost:5000`. Login with the default credentials (`admin` / `admin123`).
 
-1. Place your files in the `input/` folder:
-   - Log files: `input/logs/*.csv`
-   - Video files: `input/videos/*.mp4`
+### 4. Run CLI Backend Processing 
 
+You can also orchestrate the agents entirely via the Command Line Interface.
+1. Place input files in the `input/` folder (e.g., `input/logs/*.csv` or `input/videos/*.mp4`).
 2. Run the processor:
 ```bash
 python process_input.py
 ```
+3. Check the aggregated analysis in the `output/` directory.
 
-3. Check results in `output/` folder
+---
 
-#### Full Security Scan (Legacy)
-```python
-from main_orchestrator import CyberOrchestrator
+## 📁 System Architecture
 
-orchestrator = CyberOrchestrator()
-orchestrator.run_full_scan(include_network=True)
+```text
+Agentic-Multimodal-Threat-Orchestrator/
+├── base_agent.py          # Base architectural class for agents
+├── log_agent.py           # Core Security log analysis agent
+├── vision_agent.py        # Core Video/image visual analysis agent
+├── network_agent.py      # Core Network protocol security agent
+├── main_orchestrator.py   # Synchronizes analysis across all agents
+├── process_input.py       # Terminal input data processor
+├── train_model.py         # Sci-kit learn training scripts
+├── config.py              # Global runtime configuration
+├── dashboard/             # Flask-based Real-time Web Dashboard Application
+│   ├── app.py             # Dashboard entry point
+│   ├── monitor.py         # Active Dashboard monitoring services
+│   └── templates/         # Interactive UI templates
+├── input/                 # Directory for dropping new evidence files
+└── output/                # Directory for generated reports and threat scores
 ```
 
-#### Quick Scan (Logs + Vision only)
-```python
-orchestrator = CyberOrchestrator()
-orchestrator.run_quick_scan()
-```
+## 📋 Extending the Rules
 
-#### Use Individual Agents
-```python
-from log_agent import LogAgent
-from vision_agent import VisionAgent
-from network_agent import NetworkAgent
-
-# Log analysis
-log_agent = LogAgent()
-result = log_agent.analyze()
-
-# Vision analysis
-vision_agent = VisionAgent()
-result = vision_agent.analyze(video_path="path/to/video.mp4")
-
-# Network analysis
-network_agent = NetworkAgent()
-result = network_agent.analyze()
-```
-
-## 📁 Project Structure
-
-```
-crypto_pro/
-├── base_agent.py          # Base class for all agents
-├── log_agent.py           # Security log analysis agent
-├── vision_agent.py        # Video/image analysis agent
-├── network_agent.py      # Network security agent
-├── main_orchestrator.py   # Main orchestrator
-├── process_input.py       # Main input processing script
-├── train_model.py         # ML model training script
-├── config.py              # Configuration settings
-├── requirements.txt       # Python dependencies
-├── input/                 # Input files directory
-│   ├── logs/              # Place CSV log files here
-│   ├── videos/            # Place MP4 video files here
-│   └── network/           # Optional network data files
-├── archive/               # Legacy log files directory
-└── output/                # Results output directory
-```
-
-## ⚙️ Configuration
-
-Edit `config.py` to customize:
-- API keys and models
-- File paths
-- Agent timeouts and retries
-- Output directories
-
-## 🔧 Extending the Framework
-
-To add a new agent:
-
-1. Create a new agent class inheriting from `BaseAgent`:
-```python
-from base_agent import BaseAgent
-
-class MyCustomAgent(BaseAgent):
-    def __init__(self):
-        super().__init__("MyCustomAgent")
-    
-    def analyze(self, *args, **kwargs):
-        # Your analysis logic
-        result = self._call_llm(prompt)
-        return self.format_report(threat_level, details, confidence)
-```
-
-2. Register it in `main_orchestrator.py`:
-```python
-self.agents['custom'] = MyCustomAgent()
-```
-
-## 📊 Threat Levels
-
-- **CRITICAL**: Immediate security threat detected
-- **WARNING**: Suspicious activity that requires attention
-- **SECURE**: No threats detected
-
-## 🛠️ Requirements
-
-- Python 3.8+
-- Google Gemini API key
-- OpenCV (for video processing)
-
-## 📝 License
-
-This project is for educational and research purposes.
+You can add custom agents by inheriting from `BaseAgent` and loading your new class into `main_orchestrator.py`. Threat levels are globally recognized as **CRITICAL**, **WARNING**, or **SECURE**. Configuration rules for the web dashboard (like Whitelisted IP address and time-of-day access) can be updated in the Dashboard admin panel.
 
 ## 🤝 Contributing
 
-Feel free to extend this framework with additional agents or improvements!
+Contributions are always welcome! Feel free to extend this framework with additional agents or enhancements. Create a pull request to submit changes.
 
+## 📝 License
 
+This project is built for educational and research purposes prioritizing AI-based multimodality in cybersecurity architectures.
